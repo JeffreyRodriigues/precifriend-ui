@@ -8,47 +8,94 @@ import { Ingrediente } from '../../models/ingrediente.model';
   selector: 'app-ingrediente-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [FormBuilder],
   template: `
-    <div class="modal-backdrop" (click)="fechar()"></div>
-    <div class="modal-content">
-      <h2>{{ isEdit ? 'Editar Ingrediente' : 'Novo Ingrediente' }}</h2>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" (click)="$event.stopPropagation()">
-        <label>
-          Nome:
-          <input formControlName="nome" />
-        </label><br/>
-        <label>
-          Quantidade Embalagem (g):
-          <input type="number" formControlName="quantidadeEmbalagem" />
-        </label><br/>
-        <label>
-          Custo Embalagem (R$):
-          <input type="number" step="0.01" formControlName="custoEmbalagem" />
-        </label><br/>
-        <button type="submit" [disabled]="form.invalid">{{ isEdit ? 'Atualizar' : 'Salvar' }}</button>
-        <button type="button" (click)="fechar()">Cancelar</button>
-      </form>
+    <div
+      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      (click)="fechar()"
+    >
+      <div
+        class="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg"
+        (click)="$event.stopPropagation()"
+      >
+        <h2 class="text-xl font-semibold mb-4">
+          {{ isEdit ? 'Editar Ingrediente' : 'Novo Ingrediente' }}
+        </h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <label class="block mb-3">
+            <span class="text-gray-700 font-medium">Nome:</span>
+            <input
+              formControlName="nome"
+              type="text"
+              class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="form.controls['nome'].invalid && form.controls['nome'].touched"
+            />
+            <small
+              *ngIf="form.controls['nome'].invalid && form.controls['nome'].touched"
+              class="text-red-600 text-sm"
+            >
+              Nome é obrigatório.
+            </small>
+          </label>
+
+          <label class="block mb-3">
+            <span class="text-gray-700 font-medium">Quantidade Embalagem (g):</span>
+            <input
+              formControlName="quantidadeEmbalagem"
+              type="number"
+              min="1"
+              class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="
+                form.controls['quantidadeEmbalagem'].invalid && form.controls['quantidadeEmbalagem'].touched
+              "
+            />
+            <small
+              *ngIf="form.controls['quantidadeEmbalagem'].invalid && form.controls['quantidadeEmbalagem'].touched"
+              class="text-red-600 text-sm"
+            >
+              Quantidade deve ser no mínimo 1.
+            </small>
+          </label>
+
+          <label class="block mb-4">
+            <span class="text-gray-700 font-medium">Custo Embalagem (R$):</span>
+            <input
+              formControlName="custoEmbalagem"
+              type="number"
+              step="0.01"
+              min="0"
+              class="mt-1 block w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              [class.border-red-500]="form.controls['custoEmbalagem'].invalid && form.controls['custoEmbalagem'].touched"
+            />
+            <small
+              *ngIf="form.controls['custoEmbalagem'].invalid && form.controls['custoEmbalagem'].touched"
+              class="text-red-600 text-sm"
+            >
+              Custo deve ser zero ou positivo.
+            </small>
+          </label>
+
+          <div class="flex justify-end space-x-3">
+            <button
+              type="submit"
+              [disabled]="form.invalid"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            >
+              {{ isEdit ? 'Atualizar' : 'Salvar' }}
+            </button>
+            <button
+              type="button"
+              (click)="fechar()"
+              class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  `,
-  styles: [`
-    .modal-backdrop {
-      position: fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.5);
-      z-index: 10;
-    }
-    .modal-content {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 1rem;
-      z-index: 11;
-      border-radius: 5px;
-      width: 300px;
-    }
-    input { width: 100%; }
-  `]
+  `
 })
 export class IngredienteModalComponent implements OnInit, OnChanges {
   @Input() ingrediente?: Ingrediente;

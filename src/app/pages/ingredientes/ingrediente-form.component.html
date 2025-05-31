@@ -1,1 +1,29 @@
-<p>ingrediente-form works!</p>
+<form (ngSubmit)="onSubmit()" #form="ngForm" class="space-y-4">
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Nome</label>
+    <input [(ngModel)]="ingrediente.nome" name="nome" required
+      class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Custo da Embalagem</label>
+    <input [(ngModel)]="ingrediente.custoEmbalagem" name="custoEmbalagem" type="number" step="0.01" required
+      class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Quantidade por Embalagem (g)</label>
+    <input [(ngModel)]="ingrediente.quantidadeEmbalagem" name="quantidadeEmbalagem" type="number" required
+      class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" />
+  </div>
+
+  <div class="flex justify-end gap-2 mt-6">
+    <button type="button" (click)="cancelar.emit()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition">
+      Cancelar
+    </button>
+    <button type="submit" [disabled]="form.invalid"
+      class="px-4 py-2 bg-primary text-white rounded hover:bg-blue-600 transition">
+      Salvar
+    </button>
+  </div>
+</form>
