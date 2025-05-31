@@ -1,0 +1,8 @@
+<a routerLink="/ingredientes/novo">Novo Ingrediente</a>
+<ul>
+  <li *ngFor="let ingrediente of ingredientes">
+    {{ ingrediente.nome }} - {{ ingrediente.quantidadeEmbalagem }}g - R$ {{ ingrediente.custoEmbalagem | number:'1.2-2' }}
+    <a [routerLink]="['/ingredientes', ingrediente.id, 'editar']">Editar</a>
+    <button (click)="deleteIngrediente(ingrediente.id)">Excluir</button>
+  </li>
+</ul>
