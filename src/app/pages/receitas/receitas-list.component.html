@@ -1,0 +1,67 @@
+<div class="p-6 max-w-4xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-semibold">Receitas</h1>
+    <button
+      (click)="novaReceita()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition"
+    >
+      + Nova Receita
+    </button>
+  </div>
+
+  <div *ngIf="receitas.length === 0" class="text-gray-500 text-center py-10">
+    Nenhuma receita cadastrada.
+  </div>
+
+  <table
+    *ngIf="receitas.length > 0"
+    class="w-full border border-gray-300 rounded shadow-sm"
+  >
+    <thead class="bg-gray-100 text-gray-700">
+      <tr>
+        <th class="border-b border-gray-300 px-4 py-2 text-left">Nome</th>
+        <th class="border-b border-gray-300 px-4 py-2 text-right">Custo Total</th>
+        <th class="border-b border-gray-300 px-4 py-2 text-right">Preço Final</th>
+        <th class="border-b border-gray-300 px-4 py-2 text-center">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let receita of receitas"
+        class="hover:bg-gray-50 cursor-pointer"
+      >
+        <td class="border-b border-gray-200 px-4 py-2">{{ receita.nome }}</td>
+        <td class="border-b border-gray-200 px-4 py-2 text-right">
+          R$ {{ receita.custoTotal !== null ? receita.custoTotal.toFixed(2) : '0,00' }}
+        </td>
+        <td class="border-b border-gray-200 px-4 py-2 text-right">
+          R$ {{ receita.precoFinal !== null ? receita.precoFinal.toFixed(2) : '0,00' }}
+        </td>
+        <td class="border-b border-gray-200 px-4 py-2 text-center space-x-2">
+          <button
+            (click)="editar(receita)"
+            class="text-blue-600 hover:text-blue-800"
+            title="Editar"
+          >
+            ✏️
+          </button>
+          <button
+            (click)="excluir(receita.id!); $event.stopPropagation()"
+            class="text-red-600 hover:text-red-800"
+            title="Excluir"
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal da receita -->
+  <app-receita-modal
+    *ngIf="modalAberto"
+    [receita]="receitaSelecionada"
+    (saved)="Salvar()"
+    (closed)="modalAberto = false"
+  ></app-receita-modal>
+</div>

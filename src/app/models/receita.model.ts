@@ -1,4 +1,4 @@
-import { ItemReceita } from './item-receita.model';
+import { ItemReceita } from './itemReceita.model';
 
 export interface Receita {
   id?: number;

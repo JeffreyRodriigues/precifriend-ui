@@ -1,0 +1,32 @@
+<div class="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
+  <div class="bg-white p-4 rounded-lg shadow w-full max-w-2xl">
+    <h2 class="text-xl font-bold mb-4">{{ receita ? 'Editar' : 'Nova' }} Receita</h2>
+
+    <form [formGroup]="form" (ngSubmit)="salvar()">
+      <div class="mb-4">
+        <label class="block">Nome:</label>
+        <input formControlName="nome" class="border p-2 w-full rounded" />
+      </div>
+
+      <div class="mb-4">
+        <h3 class="font-semibold">Itens da Receita</h3>
+        <div formArrayName="itens">
+          <div *ngFor="let item of itens.controls; let i = index" [formGroupName]="i" class="flex gap-2 items-center mt-2">
+            <select formControlName="ingredienteId" class="border p-1 rounded">
+              <option [ngValue]="null">-- Ingrediente --</option>
+              <option *ngFor="let ing of ingredientesDisponiveis" [value]="ing.id">{{ ing.nome }}</option>
+            </select>
+            <input type="number" formControlName="quantidade" class="border p-1 w-24 rounded" placeholder="Qtd" />
+            <button type="button" (click)="removerItem(i)" class="text-red-500">✖</button>
+          </div>
+        </div>
+        <button type="button" (click)="adicionarItem()" class="mt-2 text-blue-500">+ Adicionar Item</button>
+      </div>
+
+      <div class="flex justify-end gap-4">
+        <button type="button" (click)="fechar()" class="bg-gray-300 px-4 py-2 rounded">Cancelar</button>
+        <button type="submit" [disabled]="form.invalid" class="bg-green-500 text-white px-4 py-2 rounded">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>

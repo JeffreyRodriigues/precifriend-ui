@@ -1,8 +1,14 @@
 import { Routes } from '@angular/router';
-import { IngredientesListComponent } from './pages/ingredientes/ingredientes-list.component';
 
 export const routes: Routes = [
-  { path: 'ingredientes', component: IngredientesListComponent },
+  {
+    path: 'ingredientes',
+    loadComponent: () => import('./pages/ingredientes/ingredientes-list.component').then(m => m.IngredientesListComponent)
+  },
+  {
+    path: 'receitas',
+    loadComponent: () => import('./pages/receitas/receitas-list.component').then(m => m.ReceitaListComponent)
+  },
   { path: '', redirectTo: 'ingredientes', pathMatch: 'full' },
   { path: '**', redirectTo: 'ingredientes' }
 ];
